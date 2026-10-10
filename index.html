@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pulse &amp; Vital</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--co:#2b50ff;--te:#0b6e75;--ink:#101c33;--mut:#6b7794;--bg:#f4f6fc;--gr:#12a36e;--rd:#e8384f;--am:#c47f0c;--ln:#dfe5f3}
+*{box-sizing:border-box;margin:0}
+body{font:14px/1.45 Poppins,system-ui,sans-serif;color:var(--ink);background:var(--bg)}
+h1,h2.sf,.lg,.hero h1{font-family:Lora,Georgia,serif}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+button:disabled{opacity:.5;cursor:not-allowed}
+:focus-visible{outline:2px solid var(--co);outline-offset:2px}
+input,textarea{font:inherit;color:inherit}
+.app{display:grid;grid-template-columns:210px 1fr;gap:26px;max-width:1180px;margin:0 auto;padding:22px 16px}
+.dock{position:sticky;top:16px;align-self:start}
+.dock h1{font-size:23px;line-height:1.1;margin-bottom:4px}
+.dock p,.mut{color:var(--mut);font-size:12px}
+.dock h3{font-size:12px;font-weight:600;color:var(--mut);margin:14px 0 4px}
+.dk{display:flex;gap:8px;width:100%;text-align:left;padding:6px 8px;border-radius:9px;font-size:13px;align-items:center}
+.dk b{width:20px;height:20px;border-radius:50%;background:var(--ink);color:#fff;font-size:11px;display:grid;place-items:center;flex:none}
+.dk.on{background:#fff;box-shadow:0 1px 5px #2b50ff22;font-weight:600}
+.rs{margin-top:14px;font-size:12px;color:var(--mut);text-decoration:underline}
+#stage{display:flex;justify-content:center;padding:28px 14px;border-radius:28px;min-height:84vh;align-items:flex-start}
+#stage.p{background:linear-gradient(135deg,#dbe3ff,#f3f5ff)}#stage.d{background:linear-gradient(135deg,#d3eeeb,#f2faf8)}
+.ph{width:380px;height:760px;background:var(--bg);border:9px solid var(--ink);border-radius:42px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 50px #101c3333}
+.sbr{display:flex;justify-content:space-between;padding:10px 20px 4px;font-size:12px;flex:none}
+.ph.h .sbr{background:var(--co);color:#fff}
+.scr{flex:1;overflow:auto;padding:8px 16px 16px}
+.nv{display:flex;border-top:1px solid var(--ln);background:#fff;flex:none}
+.nv button{flex:1;padding:8px 0 10px;font-size:11px;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:2px}
+.nv .on{color:var(--co);font-weight:600}
+.hero{background:var(--co);color:#fff;padding:18px 20px 38px;margin:-8px -16px 14px}
+.hero h1{font-size:34px;font-weight:600;margin:14px 0 4px}.hero p{opacity:.9;max-width:230px}
+.logo{width:44px;height:44px;border-radius:12px;background:#fff;color:var(--co);display:grid;place-items:center}
+.hd{display:flex;align-items:center;gap:10px;margin:6px 0 12px}.hd h2{font-size:17px;font-weight:600}
+.rb{width:36px;height:36px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 1px 4px #0002;flex:none}
+.pills,.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}
+.pill{padding:7px 13px;border-radius:99px;background:#fff;border:1px solid var(--ln);font-size:12px;font-weight:500;white-space:nowrap;flex:none}
+.pill.on{background:var(--co);color:#fff;border-color:var(--co)}.tabs .pill.on{background:var(--ink);border-color:var(--ink)}
+.choice{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:0 1px 8px #2b50ff18;color:var(--co)}
+.choice span:nth-child(2){flex:1;color:var(--ink)}.choice b{display:block;font-size:15px}.choice small{color:var(--mut);font-size:12px;line-height:1.3;display:block}
+.choice.t{color:var(--te)}.ico{width:46px;height:46px;border-radius:13px;background:#e6ebff;display:grid;place-items:center}.t .ico{background:#d9f1f0}
+.note{display:flex;gap:6px;color:var(--mut);font-size:12px;margin-top:6px}
+label{display:block;font-size:12px;color:var(--mut);margin:12px 0 5px}
+.fld{display:flex;align-items:center;background:#fff;border:1px solid var(--ln);border-radius:12px;padding:0 10px}
+.fld input{flex:1;border:0;outline:0;height:46px;background:none;min-width:0;letter-spacing:.04em}
+.fld:focus-within{border-color:var(--co)}
+.tk{color:var(--gr);opacity:0}.mini{font-size:11px;font-weight:600;padding:5px 9px;border-radius:99px;background:#d9f5e9;color:var(--gr)}.mini:disabled{background:var(--ln);color:var(--mut)}
+#steps{display:flex;align-items:center;gap:4px;margin-bottom:4px}#steps u{flex:1;height:2px;background:var(--ln)}
+.st{font-size:11px;font-weight:600;padding:4px 9px;border-radius:99px;background:#fff;border:1px solid var(--ln);color:var(--mut);display:inline-flex;gap:3px;align-items:center}
+.st.g{background:var(--gr);color:#fff;border-color:var(--gr)}.st.b{background:var(--co);color:#fff;border-color:var(--co)}
+.otp{display:flex;gap:7px}.ob{width:100%;min-width:0;height:48px;text-align:center;font-size:18px;font-weight:600;border:1px solid var(--ln);border-radius:11px;background:#fff}
+.row{display:flex;justify-content:space-between;align-items:center;margin-top:6px}.lnk{color:var(--co);font-size:12px;font-weight:600}.lnk:disabled{color:var(--co)}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--ink);margin:14px 0 8px}.chk input{margin-top:3px;accent-color:var(--co);width:18px;height:18px}
+.err{color:var(--rd);font-size:12px;min-height:18px;margin:4px 0}
+.cta{width:100%;min-height:46px;border-radius:14px;background:var(--co);color:#fff;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 14px}
+.cta.te{background:var(--te)}.cta.o{background:#fff;color:var(--co);border:1.5px solid var(--co)}.cta.rd{background:var(--rd)}.cta.gr{background:var(--gr)}
+.idk{background:linear-gradient(135deg,var(--co),#1c34c9);color:#fff;border-radius:18px;padding:14px;margin-bottom:12px}
+.idk small{opacity:.8}.idk b{display:block;font-size:20px;letter-spacing:.06em;margin:2px 0 10px}
+.idk div{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{display:inline-flex;gap:4px;align-items:center;padding:6px 10px;border-radius:99px;background:#ffffff30;font-size:11px;font-weight:600}
+.chip.w{background:#fff;color:var(--co)}
+h3.s{font-size:14px;margin:6px 0 8px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tile{background:#fff;border-radius:14px;padding:10px;text-align:left;box-shadow:0 1px 6px #2b50ff12;min-height:92px;display:flex;flex-direction:column;gap:4px}
+.tile i{width:30px;height:30px;border-radius:9px;display:grid;place-items:center}.tile b{font-size:12px;line-height:1.2}.tile small{font-size:11px;color:var(--mut)}
+.cd{background:#fff;border-radius:16px;padding:12px;box-shadow:0 1px 6px #2b50ff14;margin-bottom:10px;width:100%;text-align:left;display:block}
+.ln{display:flex;gap:10px;align-items:center}.ln>div{flex:1;min-width:0}.ln b{display:block;font-size:13px}.ln small{color:var(--mut);font-size:11px}
+.ci{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;flex:none}
+.idc{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 2px 10px #2b50ff1f;margin-bottom:12px}
+.idc>header{background:var(--co);color:#fff;padding:9px 14px;display:flex;gap:8px;align-items:center;font-family:Lora,serif}
+.idc>div{padding:14px;text-align:center}.idc .who{display:flex;gap:12px;text-align:left;margin-bottom:10px}
+.ph1{width:78px;height:78px;border-radius:14px;background:linear-gradient(135deg,#dbe3ff,#9bb0ff);display:grid;place-items:center;color:#fff;flex:none}
+.qb{width:150px;height:150px;margin:0 auto;border:1px solid var(--ln);border-radius:12px;padding:8px}.qb svg{width:100%;height:100%;fill:var(--ink)}
+.bar{height:6px;background:var(--ln);border-radius:9px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:var(--co);transition:width 1s linear}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.vb{display:inline-flex;gap:4px;align-items:center;background:#d9f5e9;color:#0a7a52;font-size:11px;font-weight:600;border-radius:99px;padding:3px 9px}
+.pv{background:#10192d;border-radius:12px;margin:8px 0;position:relative;overflow:hidden}.pv svg{display:block;width:100%}
+.pv span{position:absolute;bottom:7px;font-size:11px;color:#c9d2e3;left:9px}.pv button{position:absolute;right:8px;bottom:6px;background:#ffffff30;color:#fff;font-size:11px;padding:3px 9px;border-radius:99px}
+.seg{display:flex;background:#fff;border-radius:12px;padding:3px;margin-bottom:12px}.seg button{flex:1;padding:9px;border-radius:9px;font-weight:600;font-size:13px;color:var(--mut)}.seg .on{background:var(--co);color:#fff}
+.em{background:#ffe3e7;border-radius:16px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:14px}.em .ci{background:var(--rd);color:#fff;border-radius:50%}.em small{color:#a3203a}
+.empty{color:var(--mut);text-align:center;padding:28px 10px}
+.kv{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--ln);font-size:13px}.kv span{color:var(--mut)}
+.br{width:100%;max-width:980px;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 22px 50px #0b6e7530}
+.bb{display:flex;gap:6px;align-items:center;padding:10px 12px;background:#e4ebf3}.bb i{width:10px;height:10px;border-radius:50%;background:#c1cbda}
+.bb span{flex:1;margin-left:8px;background:#fff;border-radius:99px;padding:3px 12px;font-size:12px;color:var(--mut)}
+.db{display:grid;grid-template-columns:190px 1fr;min-height:580px}
+.sd{background:var(--te);color:#fff;padding:14px 10px;display:flex;flex-direction:column;gap:4px}
+.sd .lg{display:flex;gap:7px;align-items:center;padding:4px 8px 12px;font-size:16px}
+.sd button{display:flex;gap:8px;align-items:center;padding:9px 10px;border-radius:9px;font-size:13px;text-align:left;color:#d8f0ee}
+.sd button.on{background:#ffffff26;color:#fff;font-weight:600}.sd .us{margin-top:auto;font-size:12px;display:flex;gap:8px;align-items:center;padding:8px}
+.av{width:30px;height:30px;border-radius:50%;background:#ffffff33;display:grid;place-items:center;font-size:11px;font-weight:600;flex:none}
+.mn{background:#f1f9f8;padding:18px 20px;min-width:0}
+.mn h2{font-size:20px}.top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.vp{background:#d9f5e9;color:#0a7a52;font-size:12px;font-weight:600;padding:4px 11px;border-radius:99px;display:inline-flex;gap:4px;align-items:center}
+.dc{background:#fff;border-radius:14px;padding:14px;box-shadow:0 1px 6px #0b6e7518}
+.dc h3{font-size:14px;margin-bottom:2px}.dc input[type=text],.dc textarea,.sg input,.mc input,.mc textarea{width:100%;border:1px solid var(--ln);border-radius:10px;padding:0 12px;height:44px;background:#fff;margin-top:6px}
+.dc textarea,.mc textarea{padding:10px 12px;height:76px;resize:vertical}
+.scanb{background:#10192d;border-radius:12px;height:112px;margin-top:8px;width:100%;display:grid;place-items:center;color:#fff;position:relative;overflow:hidden}
+.scanb i{position:absolute;left:36%;right:36%;height:2px;background:#26e0a0;top:50%}
+.ban{background:var(--rd);color:#fff;margin:-18px -20px 14px;padding:11px 20px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13px}.ban b{display:flex;gap:6px;align-items:center}
+.alert{background:#ffe3e7;border-radius:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;margin:12px 0}.alert>div{flex:1}.alert .cta{width:auto}
+.rl{display:flex;justify-content:space-between;width:100%;padding:10px 4px;border-bottom:1px solid var(--ln);font-size:13px;gap:8px;text-align:left}
+.tg{display:inline-flex;gap:4px;align-items:center;padding:5px 11px;border-radius:99px;font-size:12px;font-weight:600;margin:0 6px 6px 0}
+.sg{display:grid;grid-template-columns:1fr 1fr;min-height:560px}.sg>div:first-child{background:var(--te);color:#fff;padding:30px;display:flex;flex-direction:column;gap:12px;justify-content:flex-end}
+.sg>div:first-child h2{font-size:28px;line-height:1.15;font-weight:600}.sg li{list-style:none;display:flex;gap:8px;font-size:13px}
+.sg>div:last-child{padding:36px 34px;display:flex;flex-direction:column;justify-content:center}.sg label{margin:10px 0 0}
+.pwd{position:relative}.pwd button{position:absolute;right:10px;top:16px;color:var(--mut)}
+.ch{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.ch .pill{background:#e4f3f1;border:0}.ch .pill.on{background:var(--te)}
+.up{border:1.5px dashed #86c9c2;border-radius:12px;padding:12px;display:flex;gap:10px;align-items:center;margin:8px 0;cursor:pointer;width:100%;text-align:left;background:#fff}
+.up .bar i{background:var(--gr)}
+#md .mb{position:fixed;inset:0;background:#101c3388;display:grid;place-items:center;z-index:9;padding:16px}
+.mc{background:#fff;border-radius:18px;padding:20px;max-width:420px;width:100%;max-height:90vh;overflow:auto}.mc h2{font-size:18px;margin-bottom:6px}.mc .row{gap:8px;margin-top:12px}
+#toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:11px 18px;border-radius:12px;font-size:13px;z-index:10;display:none;max-width:90vw}
+@media(max-width:860px){.app{grid-template-columns:1fr}.dock{position:static}.dk{display:inline-flex;width:auto}.db,.sg{grid-template-columns:1fr}.sd{flex-direction:row;flex-wrap:wrap}.sd .us{display:none}.sg>div:first-child{display:none}#stage{padding:10px 0}.sum{grid-template-columns:1fr!important}}
+@media(max-width:480px){.ph{width:100%;height:calc(100vh - 20px);border-width:6px;border-radius:28px}}
+@media print{body *{visibility:hidden}.idc,.idc *{visibility:visible}.idc{position:absolute;left:0;top:0;width:340px;box-shadow:none;border:1px solid #999}}
+</style></head><body>
+<div class="app"><nav class="dock" aria-label="Screens"></nav><main id="stage"></main></div>
+<div id="md"></div><div id="toast" role="status"></div>
+<script>
+const $=s=>document.querySelector(s),pad=n=>String(n).padStart(2,'0');
+const I={pulse:"M3 12h4l2-6 4 12 2-6h6",lock:"M6 11h12v9H6zM8 11V8a4 4 0 018 0v3",home:"M4 11l8-7 8 7v9H4z",id:"M3 6h18v12H3zM7 11h.01M12 10h6M12 14h5",clock:"M12 3a9 9 0 100 18 9 9 0 000-18zM12 7v5l3 2",user:"M12 12a4 4 0 100-8 4 4 0 000 8zM4 21c0-4 4-6 8-6s8 2 8 6",qr:"M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2",print:"M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z",wallet:"M3 7h16v12H3zM3 7l2-3h12M15 13h3",check:"M5 12l5 5 9-10",shield:"M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6zM8.5 12l2.5 2.5 4.5-5",alert:"M12 4l9 16H3zM12 10v4M12 17v.5",search:"M11 4a7 7 0 100 14 7 7 0 000-14zM16 16l5 5",plus:"M12 5v14M5 12h14",phone:"M5 4h4l2 5-2 1a11 11 0 005 5l1-2 5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z",up:"M12 16V4M7 9l5-5 5 5M5 20h14",pill:"M10.5 20.5a4.5 4.5 0 01-6.4-6.4l10-10a4.5 4.5 0 016.4 6.4zM8.5 8.5l7 7",flask:"M9 3h6M10 3v6l-5 9a2 2 0 002 3h10a2 2 0 002-3l-5-9V3",eye:"M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12zM12 9a3 3 0 100 6 3 3 0 000-6z",leaf:"M5 19C5 9 11 5 20 4c0 9-4 15-13 15zM5 19l8-8",body:"M12 5h.01M6 9h12M12 9v6M9 21l3-6 3 6",back:"M15 5l-7 7 7 7",pen:"M4 20l1-4L16 5l3 3L8 19z",hosp:"M4 21V5h16v16M12 8v6M9 11h6",doc:"M6 3h9l4 4v14H6zM9 12h7M9 16h7",scan:"M4 8V4h4M16 4h4v4M20 16v4h-4M8 20H4v-4",arrow:"M5 12h14M13 6l6 6-6 6"};
+const ic=(n,s=18)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${I[n]}"/></svg>`;
+const T={en:{tag:'Your whole health history, one scan away.',pat:'I am a patient',patd:'Open or use my health vault',doc:'I am a doctor',docd:'Sign in with hospital credentials',note:'Patients and doctors use separate portals, so records stay private.'},
+hi:{tag:'आपका पूरा स्वास्थ्य इतिहास, बस एक स्कैन दूर।',pat:'मैं मरीज़ हूँ',patd:'अपना हेल्थ वॉल्ट खोलें',doc:'मैं डॉक्टर हूँ',docd:'अस्पताल क्रेडेंशियल से साइन इन करें',note:'मरीज़ और डॉक्टर अलग पोर्टल इस्तेमाल करते हैं, इसलिए रिकॉर्ड निजी रहते हैं।'},
+ml:{tag:'നിങ്ങളുടെ മുഴുവൻ ആരോഗ്യ ചരിത്രം, ഒരു സ്കാൻ അകലെ.',pat:'ഞാൻ ഒരു രോഗിയാണ്',patd:'എന്റെ ഹെൽത്ത് വോൾട്ട് തുറക്കുക',doc:'ഞാൻ ഒരു ഡോക്ടറാണ്',docd:'ആശുപത്രി ക്രെഡൻഷ്യലുകൾ ഉപയോഗിച്ച് സൈൻ ഇൻ ചെയ്യുക',note:'രോഗികളും ഡോക്ടർമാരും വെവ്വേറെ പോർട്ടലുകൾ ഉപയോഗിക്കുന്നു, അതിനാൽ രേഖകൾ സ്വകാര്യമായി നിലനിൽക്കുന്നു.'}};
+const LN={en:'English',hi:'हिन्दी',ml:'മലയാളം'};
+const E={en:['English','Emergency summary','Blood group','Allergies and emergency medicine','Regular medicines','Family contact','Call now','Past surgery'],
+ar:['العربية','ملخص الطوارئ','فصيلة الدم','الحساسية والدواء الطارئ','الأدوية المنتظمة','جهة اتصال العائلة','اتصل الآن','جراحة سابقة'],
+zh:['中文','急救摘要','血型','过敏与急救药物','常规用药','家属联系人','立即拨打','既往手术'],
+es:['Español','Resumen de emergencia','Grupo sanguíneo','Alergias y medicación de urgencia','Medicamentos habituales','Contacto familiar','Llamar ahora','Cirugía previa']};
+const G=[['scan','Scans','doc','#e6ebff','#2b50ff','Scans and imaging'],['blood','Blood and lab','flask','#d9f1f0','#0b6e75','Blood and lab'],['med','Medicines','pill','#fdeccd','#c47f0c','Medicines'],['allergy','Allergies','alert','#ffe0e4','#e8384f','Allergies'],['surgery','Surgeries','hosp','#d9f5e9','#12a36e','Surgeries'],['eye','Eye care','eye','#ece6ff','#6a4bd6','Eye care'],['ayur','Ayurvedic','leaf','#d9f5e9','#12a36e','Ayurvedic'],['full','Full-body','body','#e6ebff','#2b50ff','Full-body checks'],['hist','History','clock','#fdeccd','#c47f0c','History timeline']];
+const GM=Object.fromEntries(G.map(g=>[g[0],g]));
+const AT=[['CT scan','scan','ImagingStudy'],['X-ray','scan','ImagingStudy'],['MRI','scan','ImagingStudy'],['Blood report','blood','DiagnosticReport'],['Medicine','med','MedicationStatement'],['Allergy','allergy','AllergyIntolerance'],['Eye','eye','DiagnosticReport'],['Ayurvedic','ayur','DocumentReference'],['Surgery','surgery','Procedure']];
+const H={'SUN-KOC-0142':'Sunrise Hospital','CCH-KOC-0207':'City Care Hospital'};
+const P={id:'HP-2026-000001',name:'Vishnu Priya Vinodh K',sn:'Vishnu Priya',bg:'O+'};
+const NA='Dr. A. Menon',SH='Sunrise Hospital';
+const r_=(t,ti,d,by,h,x)=>Object.assign({t,ti,d,by:by||NA,h:h||SH},x);
+const seed=()=>({rec:[r_('scan','CT scan, brain','2026-10-10',0,0,{pv:1}),r_('scan','X-ray, chest','2026-09-14','Dr. R. Nair'),r_('scan','MRI, right knee','2026-06-02','Dr. S. Iyer','City Care Hospital'),
+r_('blood','Complete blood count','2026-09-28','Dr. R. Nair'),r_('blood','HbA1c','2026-09-28','Dr. R. Nair'),r_('blood','Lipid profile','2026-03-12'),
+r_('med','Metformin 500 mg, twice daily','2026-03-12'),r_('med','Amlodipine 5 mg, once daily','2026-03-12'),r_('med','Vitamin D3 60,000 IU, weekly','2026-05-04','Dr. S. Iyer','City Care Hospital'),r_('med','Pantoprazole 40 mg, before breakfast','2026-05-04','Dr. S. Iyer','City Care Hospital'),
+r_('allergy','Penicillin','2024-02-10'),r_('allergy','Adrenaline auto-injector','2024-02-10',0,0,{em:1}),
+r_('surgery','Appendectomy, 2019','2019-06-20'),
+r_('eye','Eye check-up','2026-08-05','Dr. P. Das','City Care Hospital'),r_('eye','Retina scan','2026-02-11','Dr. P. Das','City Care Hospital'),
+r_('ayur','Ayurvedic consultation','2026-07-19','Vaidya K. Warrier','Arya Vaidya Clinic'),r_('ayur','Panchakarma plan','2026-01-23','Vaidya K. Warrier','Arya Vaidya Clinic'),
+r_('full','Full-body health check','2026-04-02','Dr. S. Iyer','City Care Hospital')],
+log:[{h:SH,dr:'Dr. R. Nair',w:'Emergency summary viewed',at:'Today, 10:42 am'},{h:'City Care Hospital',dr:'Dr. S. Iyer',w:'Imaging reports viewed',at:'14 Sep 2026, 4:10 pm'},{h:SH,dr:NA,w:'Added and signed a CT scan',at:'12 Mar 2026, 11:20 am'}],
+look:[{id:P.id,k:'Emergency summary',at:'Today, 10:42'},{id:'HP-2026-000047',k:'Follow-up visit',at:'Yesterday'}],
+ec:{n:'Amma (Mother)',p:'+91 98765 43321'}});
+const KEY='pulse-vital-v1';let D;try{D=JSON.parse(localStorage.getItem(KEY))}catch(e){}D=D||seed();
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}};
+const S={r:'s1',lang:'en',tab:'scan',lt:'log',el:'en',st:'scan',ox:0,ar:{i:0,title:'',note:'',f:null,p:0}};
+const fd=d=>new Date(d+'T00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+const iso=()=>new Date().toISOString().slice(0,10),rel=d=>d===iso()?'today':fd(d);
+const tm=()=>{const d=new Date(),h=d.getHours();return 'Today, '+((h%12)||12)+':'+pad(d.getMinutes())+' '+(h<12?'am':'pm')};
+const fa=s=>s.replace(/(\d{4})(?=\d)/g,'$1 ');
+const mp=p=>{const d=p.replace(/\D/g,'');return '+91 '+d.slice(2,4)+'•••• ••'+d.slice(-3)};
+const cnt=t=>t==='hist'?D.rec.length:D.rec.filter(r=>r.t===t).length;
+const ctxt=k=>{const n=cnt(k);if(k==='hist')return 'Timeline';return n+' '+(k==='med'?'active':k==='surgery'?'on file':k==='full'?(n==1?'check':'checks'):(n==1?'report':'reports'))};
+const hs=s=>{let h=2166136261;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
+const mb=a=>()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const win=()=>Math.floor(Date.now()/6e4),tk=w=>'PV'+hs(P.id+w).toString(36).toUpperCase().slice(0,6);
+function qr(w){const r=mb(hs(P.id+w));let d='';[[0,0],[18,0],[0,18]].forEach(([x,y])=>d+=`M${x} ${y}h7v7h-7zM${x+1} ${y+1}h5v5h-5zM${x+2} ${y+2}h3v3h-3z`);
+for(let y=0;y<25;y++)for(let x=0;x<25;x++){if((x<8&&y<8)||(x>16&&y<8)||(x<8&&y>16))continue;if(r()>.5)d+=`M${x} ${y}h1v1h-1z`}
+return `<svg viewBox="0 0 25 25" shape-rendering="crispEdges" role="img" aria-label="Rotating QR code"><path fill-rule="evenodd" d="${d}"/></svg>`}
+const toast=(m,ms=2800)=>{const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',ms)};
+const modal=h=>{$('#md').innerHTML=`<div class="mb" data-a="shade"><div class="mc" role="dialog" aria-modal="true">${h}</div></div>`;const f=$('#md input,#md button');f&&f.focus()};
+const close=()=>$('#md').innerHTML='';
+const err=(s,m)=>{const e=$(s);if(e)e.textContent=m};
+const dn=em=>{const l=em.split('@')[0].split(/[._]/).filter(Boolean);if(!l.length)return 'Dr.';const x=l.pop(),c=s=>s[0].toUpperCase()+s.slice(1);return 'Dr. '+l.map(s=>s[0].toUpperCase()+'.').join(' ')+(l.length?' ':'')+c(x)};
+const ini=n=>n.replace('Dr. ','').split(' ').map(x=>x[0]).join('');
+const pv=h=>`<svg viewBox="0 0 300 ${h}"><rect width="300" height="${h}" fill="#10192d"/><ellipse cx="150" cy="${h/2}" rx="110" ry="${h*.45}" fill="#27344d"/><ellipse cx="150" cy="${h/2}" rx="66" ry="${h*.27}" fill="#8ea0b8"/><ellipse cx="150" cy="${h/2}" rx="24" ry="${h*.1}" fill="#e6ecf5"/></svg>`;
+const nav=a=>`<div class="nv">${[['s3','home','Vault'],['s4','id','My ID'],['s6l','clock','Access log'],['s6m','user','Profile']].map(([r,i,l])=>`<button class="${a===r?'on':''}" data-a="pn" data-v="${r}">${ic(i,20)}${l}</button>`).join('')}</div>`;
+const back=r=>`<button class="rb" data-a="go" data-r="${r}" aria-label="Back">${ic('back')}</button>`;
+const sbar=a=>`<aside class="sd"><div class="lg">${ic('pulse')} Pulse &amp; Vital</div>${[['s8','search','Find patient'],['s10','plus','Add record'],['rl','clock','Recent lookups'],['hs','hosp','Hospital settings']].map(([r,i,l])=>`<button class="${a===r?'on':''}" data-a="dn" data-v="${r}">${ic(i)}${l}</button>`).join('')}<div class="us"><span class="av">${ini(S.doc.n)}</span><span>${S.doc.n}<br>${S.doc.h}</span></div></aside>`;
+const reps=()=>S.tab==='hist'?[...D.rec].sort((a,b)=>b.d.localeCompare(a.d)):D.rec.filter(r=>r.t===S.tab);
+const SC={
+s1:()=>{const t=T[S.lang];return `<div class="scr"><div class="hero"><div class="logo">${ic('pulse',24)}</div><h1>Pulse &amp; Vital</h1><p>${t.tag}</p></div>
+<div class="pills">${Object.keys(LN).map(l=>`<button class="pill ${S.lang==l?'on':''}" data-a="lang" data-v="${l}">${LN[l]}</button>`).join('')}</div>
+<button class="choice" data-a="go" data-r="s2"><span class="ico">${ic('user',22)}</span><span><b>${t.pat}</b><small>${t.patd}</small></span>${ic('arrow')}</button>
+<button class="choice t" data-a="go" data-r="s7"><span class="ico">${ic('hosp',22)}</span><span><b>${t.doc}</b><small>${t.docd}</small></span>${ic('arrow')}</button>
+<p class="note">${ic('lock',14)}<span>${t.note}</span></p></div>`},
+s2:()=>`<div class="scr"><div class="hd">${back('s1')}<h2>Open your vault</h2></div><div id="steps"></div>
+<label for="aad">Aadhaar number</label><div class="fld"><input id="aad" inputmode="numeric" autocomplete="off" placeholder="XXXX XXXX XXXX" value="${fa(S.aad||'')}"><span id="aadok" class="tk">${ic('check')}</span></div>
+<label for="ph">Phone number</label><div class="fld"><input id="ph" inputmode="numeric" placeholder="10-digit mobile number" value="${S.ph||''}"><button class="mini" id="sendb" data-a="sendotp"></button></div>
+<label>Enter the 6-digit OTP</label><div class="otp">${[0,1,2,3,4,5].map(i=>`<input class="ob" maxlength="1" inputmode="numeric" aria-label="OTP digit ${i+1}">`).join('')}</div>
+<div class="row"><span class="mut">Code valid for 5 minutes</span><button id="rsb" class="lnk" data-a="sendotp"></button></div>
+<label class="chk"><input type="checkbox" id="cons"><span>I agree to let Pulse &amp; Vital check my Aadhaar and phone number to open my vault.</span></label>
+<p id="err" class="err" role="alert"></p><button class="cta" data-a="verify">Verify and continue</button></div>`,
+s3:()=>{const L=D.rec[0];return `<div class="scr"><div class="row" style="margin:6px 0 12px"><div><small class="mut">Good morning</small><div style="font-weight:600;font-size:17px">${P.sn}</div></div><button class="logo" style="background:var(--co);color:#fff;border-radius:50%;width:38px;height:38px;font-size:12px;font-weight:600" data-a="pn" data-v="s6m" aria-label="Profile">VP</button></div>
+<div class="idk"><small>Patient ID</small><b>${P.id}</b><div><span class="chip">${ic('shield',13)}${D.rec.length} verified records</span><button class="chip w" data-a="go" data-r="s4">${ic('qr',13)}Show QR</button></div></div>
+<h3 class="s">Your records</h3><div class="grid">${G.map(g=>`<button class="tile" data-a="grp" data-v="${g[0]}"><i style="background:${g[3]};color:${g[4]}">${ic(g[2],16)}</i><b>${g[1]}</b><small>${ctxt(g[0])}</small></button>`).join('')}</div>
+<div class="cd" style="margin-top:10px"><div class="ln"><span class="ci" style="background:#d9f5e9;color:var(--gr)">${ic('check')}</span><div><b>${L.ti} verified</b><small>${L.by}, ${rel(L.d)}</small></div></div></div></div>${nav('s3')}`},
+s4:()=>`<div class="scr"><div class="row" style="margin:6px 0 10px"><h2 style="font-size:19px">My ID card</h2><span class="vp">${ic('lock',13)}Secure</span></div>
+<div class="idc"><header>${ic('pulse')} Pulse &amp; Vital</header><div><div class="who"><span class="ph1">${ic('user',34)}</span><div><small class="mut">Name</small><b style="display:block">Vishnu Priya<br>Vinodh K</b><small class="mut">ID number</small><b style="display:block;font-size:12px">${P.id}</b></div></div>
+<div class="qb" id="qrb">${qr(win())}</div><p class="mut" style="margin-top:8px">Scan, or type the ID, at a verified hospital</p><p class="mut">Live code: <b id="tkn" style="color:var(--ink)">${tk(win())}</b></p></div></div>
+<div class="cd"><div class="row" style="margin:0"><b style="font-size:12px" id="cdt"></b><span class="mut">every 60 s</span></div><div class="bar"><i id="cdb"></i></div></div>
+<div class="two"><button class="cta o" data-a="print">${ic('print')}Print card</button><button class="cta" data-a="wallet">${ic('wallet')}${S.wal?'Added ✓':'Add to wallet'}</button></div></div>${nav('s4')}`,
+s5:()=>{const g=GM[S.tab],ls=reps();
+return `<div class="scr"><div class="hd">${back('s3')}<h2>${g[5]}</h2></div><div class="tabs">${G.map(x=>`<button class="pill ${x[0]==S.tab?'on':''}" data-a="tab" data-v="${x[0]}">${x[1]}</button>`).join('')}</div>
+${ls.length?ls.map((r,i)=>{const q=GM[r.t],o=S.ox===i;return `<div class="cd" ${o?'':`data-a="ox" data-v="${i}" role="button" tabindex="0"`}>${o?`<div class="row" style="margin:0 0 2px;align-items:flex-start"><div><b>${r.ti}</b><br><small class="mut">${fd(r.d)}</small></div><span class="vb">${ic('shield',12)}Signed and verified</span></div>${r.pv?`<div class="pv">${pv(130)}<span>Sample slice, axial</span><button data-a="full" data-v="${i}">Full size</button></div>`:''}<div class="ln" style="margin-top:6px"><span class="ci" style="background:#d9f1f0;color:var(--te);width:28px;height:28px">${ic('user',14)}</span><small>${r.by}, ${r.h}</small></div>`:`<div class="ln"><span class="ci" style="background:${q[3]};color:${q[4]}">${ic(q[2])}</span><div><b>${r.ti}</b><small>${r.by}</small></div><small class="mut">${fd(r.d)}</small></div>`}</div>`}).join(''):'<p class="empty">No records here yet. A verified hospital adds them after a visit.</p>'}</div>${nav('s3')}`},
+s6:()=>{const me=S.lt==='me';return `<div class="scr"><h2 style="font-size:19px;margin:8px 0 12px">Access log and contacts</h2><div class="seg"><button class="${me?'':'on'}" data-a="lt" data-v="log">Access log</button><button class="${me?'on':''}" data-a="lt" data-v="me">My details</button></div>
+<div class="em"><span class="ci">${ic('phone')}</span><div style="flex:1"><small>Emergency contact</small><b style="display:block">${D.ec.n}</b><small style="color:var(--mut)">${mp(D.ec.p)}</small></div><button data-a="editec" style="color:var(--rd)" aria-label="Edit emergency contact">${ic('pen')}</button></div>
+${me?`<div class="cd"><div class="kv"><span>Name</span>${P.name}</div><div class="kv"><span>Patient ID</span>${P.id}</div><div class="kv"><span>Aadhaar</span>XXXX XXXX ${(S.aad||'').slice(-4)||'4821'}</div><div class="kv"><span>Blood group</span>${P.bg}</div><div class="kv" style="border:0"><span>Language</span>${LN[S.lang]}</div></div><button class="cta o" data-a="psign">Sign out</button>`
+:`<h3 class="s">Who opened my records</h3>${D.log.map(l=>{const ad=l.w.startsWith('Added');return `<div class="cd"><div class="ln"><span class="ci" style="background:${ad?'#d9f5e9':'#d9f1f0'};color:${ad?'var(--gr)':'var(--te)'}">${ic(ad?'plus':'hosp')}</span><div><b>${l.h}, ${l.dr}</b><small style="display:block">${l.w}</small><small>${l.at}</small></div></div></div>`}).join('')}<p class="note">${ic('shield',14)}Only verified hospitals can appear here.</p>`}</div>${nav('s6'+(me?'m':'l'))}`},
+s7:()=>`<div class="sg"><div><div class="lg" style="display:flex;gap:8px;align-items:center;font-size:18px">${ic('pulse')} Pulse &amp; Vital</div><h2 class="sf">Records open for verified hospitals only.</h2><ul>${[['shield','Hospital credentials are checked first'],['clock',"Every lookup is saved to the patient's log"],['lock','Doctors and patients use separate portals']].map(x=>`<li>${ic(x[0],16)}${x[1]}</li>`).join('')}</ul></div>
+<div id="dform"><h2 class="sf" style="font-family:Poppins;font-size:20px">Sign in to the doctor portal</h2><p class="mut">Use the login your hospital gave you.</p>
+<label for="hid">Hospital ID</label><div class="pwd"><input id="hid" value="SUN-KOC-0142" autocomplete="off"><span id="hok" class="vp" style="position:absolute;right:10px;top:14px">${ic('check',12)}Verified</span></div>
+<label for="em">Hospital email</label><input id="em" type="email" value="a.menon@sunrisehospital.in"><label for="pw">Password</label><div class="pwd"><input id="pw" type="password" value="demo1234"><button data-a="eye" aria-label="Show password">${ic('eye')}</button></div>
+<p id="err7" class="err" role="alert"></p><button class="cta te" data-a="dsign">Sign in</button><p class="mut" style="text-align:center;margin-top:10px">Hospital not listed yet? <button class="lnk" style="color:var(--te)" data-a="reqv">Request verification</button></p>
+<p class="mut" style="margin-top:12px">Demo: hospital IDs SUN-KOC-0142 or CCH-KOC-0207, any hospital email, password of 6+ characters.</p></div></div>`,
+s8:()=>`<div class="db">${sbar('s8')}<div class="mn"><div class="top"><h2 class="sf">Find a patient</h2><span class="vp">${ic('shield',13)}${S.doc.h} verified</span></div>
+<div class="two" style="gap:12px"><div class="dc"><h3>Enter the patient ID</h3><small class="mut">Printed on the patient's card</small><input type="text" id="fid" placeholder="HP-2026-000001" value="${S.fid||''}" autocomplete="off"><p id="err8" class="err" role="alert"></p><button class="cta te" data-a="open" data-v="id">Open records</button></div>
+<div class="dc"><h3>Scan the QR</h3><button class="scanb" data-a="scanq" aria-label="Scan the QR"><i></i>${ic('scan',44)}</button></div></div>
+<div class="alert"><span class="ci" style="background:var(--rd);color:#fff;border-radius:50%">${ic('alert')}</span><div><b>Patient unconscious or alone?</b><br><small>Open the emergency summary first.</small></div><button class="cta rd" data-a="open" data-v="em">Emergency view</button></div>
+<h3 class="s" id="recent">Recent lookups</h3><div class="dc" style="padding:4px 14px">${D.look.slice(0,6).map(l=>`<button class="rl" data-a="pick" data-v="${l.id}"><b>${l.id}</b><span>${l.k}</span><span class="mut">${l.at}</span></button>`).join('')}</div></div></div>`,
+s9:()=>{const e=E[S.el],al=D.rec.filter(r=>r.t==='allergy'),md=D.rec.filter(r=>r.t==='med'),sg=D.rec.find(r=>r.t==='surgery'),tl=D.rec.filter(r=>r.t===S.st);
+return `<div class="db">${sbar('s8')}<div class="mn" dir="${S.el==='ar'?'rtl':'ltr'}"><div class="ban"><b>${ic('alert',16)}${e[1]}</b><span>Opened ${S.ot}, saved to the patient's access log</span></div>
+<div class="top" dir="ltr"><div class="ln"><span class="ph1" style="width:52px;height:52px">${ic('user',26)}</span><div><b style="font-size:17px">${P.name}</b><small>${P.id}</small></div></div><div class="pills" style="margin:0">${Object.keys(E).map(k=>`<button class="pill ${S.el==k?'on':''}" style="${S.el==k?'background:var(--te);border-color:var(--te)':''}" data-a="el" data-v="${k}">${E[k][0]}</button>`).join('')}</div></div>
+<div style="display:grid;grid-template-columns:130px 1fr 190px;gap:10px" class="sum"><div class="dc" style="text-align:center"><small class="mut">${e[2]}</small><div style="width:78px;height:78px;border-radius:50%;background:var(--rd);color:#fff;font:600 24px Poppins;display:grid;place-items:center;margin:10px auto">${P.bg}</div></div>
+<div class="dc"><small class="mut">${e[3]}</small><div style="margin:6px 0">${al.map(a=>`<span class="tg" style="background:${a.em?'#fdeccd':'#ffe0e4'};color:${a.em?'var(--am)':'#a3203a'}">${ic(a.em?'pill':'alert',13)}${a.ti}</span>`).join('')}</div><small class="mut">${e[4]}</small><div style="margin-top:4px;font-size:13px">${md.slice(0,4).map(m=>m.ti+'<br>').join('')}</div></div>
+<div class="dc" style="background:#d9f5e9"><small style="color:#0a7a52">${e[5]}</small><b style="display:block">${D.ec.n}</b><small class="mut">${mp(D.ec.p)}</small><button class="cta gr" style="margin-top:10px" data-a="call">${ic('phone',16)}${e[6]}</button></div></div>
+${sg?`<div class="dc" style="margin:10px 0;display:flex;gap:8px;flex-wrap:wrap;align-items:center" dir="ltr"><b>${e[7]}</b> ${sg.ti}<span class="vb">${ic('shield',12)}Verified by ${sg.by}</span></div>`:''}
+<div dir="ltr">${[['scan','Scans'],['blood','Blood and lab'],['eye','Eye'],['ayur','Ayurvedic'],['full','Full-body']].map(x=>`<button class="pill ${S.st==x[0]?'on':''}" style="${S.st==x[0]?'background:var(--te);border-color:var(--te)':''};margin:0 6px 6px 0" data-a="st" data-v="${x[0]}">${x[1]}</button>`).join('')}
+<div class="dc" style="padding:4px 14px">${tl.length?tl.map(r=>`<div class="rl"><b>${r.ti}</b><span class="vb">${ic('shield',12)}${r.by}</span><span class="mut">${fd(r.d)}</span></div>`).join(''):'<p class="empty">Nothing on file.</p>'}</div>
+<div class="row" style="justify-content:flex-start;gap:8px;margin-top:12px"><button class="cta te" style="width:auto" data-a="go" data-r="s10">${ic('plus',16)}Add a record</button><button class="cta o" style="width:auto;color:var(--te);border-color:var(--te)" data-a="go" data-r="s8">New lookup</button></div></div></div></div>`},
+s10:()=>{const a=S.ar,t=AT[a.i],f=a.f,done=f&&a.p>=100;return `<div class="db">${sbar('s10')}<div class="mn"><div class="top"><h2 class="sf">Add and verify a record</h2><span class="vp" style="background:#e6ebff;color:var(--co)">${P.id}</span></div>
+<div class="two" style="gap:12px;align-items:start"><div class="dc"><small class="mut">Record type</small><div class="ch">${AT.map((x,i)=>`<button class="pill ${i==a.i?'on':''}" data-a="rt" data-v="${i}">${x[0]}</button>`).join('')}</div>
+<input type="text" id="ti" placeholder="Title, e.g. ${t[0]==='Allergy'?'Penicillin':t[0]==='Medicine'?'Metformin 500 mg, twice daily':t[0]+', brain'}" value="${a.title}" aria-label="Record title">
+<label class="up" for="fl" style="margin-top:10px"><span class="ci" style="background:var(--te);color:#fff">${ic('up')}</span><span style="flex:1"><b id="upn" style="font-size:13px">${f?f.n:'Choose a file to upload'}</b><br><small class="mut" id="upt">${f?(done?f.mb+' MB, uploaded':'Uploading… '+a.p+'%'):'Scans, PDFs or images'}</small><div class="bar"><i id="upb" style="width:${f?a.p:0}%"></i></div></span></label><input type="file" id="fl" hidden>
+<button class="lnk" style="color:var(--te)" data-a="sample">Use a sample scan file</button>
+<small class="mut" style="display:block;margin-top:8px">Doctor's note</small><textarea id="nt" placeholder="Short note for the patient and other doctors">${a.note}</textarea></div>
+<div class="dc" style="display:flex;flex-direction:column;min-height:340px"><h3>Review and sign</h3>${[['Saved as','FHIR '+t[2]],['Signed by',S.doc.n],['Hospital',S.doc.h],['Date',fd(iso())]].map(x=>`<div class="kv"><span>${x[0]}</span><b>${x[1]}</b></div>`).join('')}<p class="err" id="err10" role="alert"></p><p class="mut" style="margin-top:auto">After signing, the record shows in the patient's vault as verified.</p><button class="cta te" style="margin-top:8px" data-a="sign">${ic('shield',16)}Sign and add to vault</button></div></div></div></div>`}};
+const U={s7:'doctor/sign-in',s8:'doctor/find',s9:'doctor/patient/'+P.id,s10:'doctor/add-record'};
+const NAMES=[['Patient portal',[['s1','Welcome and portal choice'],['s2','Aadhaar and OTP sign-in'],['s3','My health vault'],['s4','My ID and QR'],['s5','Reports'],['s6','Access log']]],['Doctor portal',[['s7','Doctor sign-in'],['s8','Find a patient'],['s9','Emergency summary'],['s10','Add and verify a record']]]];
+function dock(){$('.dock').innerHTML=`<h1>Pulse &amp; Vital</h1><p>Interactive prototype. All data is sample data.</p>${NAMES.map(g=>`<h3>${g[0]}</h3>${g[1].map(([r,l])=>`<button class="dk ${S.r===r?'on':''}" data-a="go" data-r="${r}"><b>${r.slice(1)}</b>${l}</button>`).join('')}`).join('')}<button class="rs" data-a="reset">Reset demo data</button>`}
+function R(){const pt=+S.r.slice(1)<7,b=SC[S.r]();
+$('#stage').className=pt?'p':'d';
+$('#stage').innerHTML=pt?`<div class="ph ${S.r==='s1'?'h':''}"><div class="sbr"><b>9:41</b><span>•••</span></div>${b}</div>`:`<div class="br"><div class="bb"><i></i><i></i><i></i><span>pulsevital.health/${U[S.r]}</span></div>${b}</div>`;
+dock();if(S.r==='s2')u2();if(S.r==='s4')tick();document.documentElement.lang=S.lang}
+function u2(){if(S.r!=='s2')return;const av=(S.aad||'').length==12,pk=/^\d{10}$/.test(S.ph||'');
+$('#aadok').style.opacity=av?1:0;
+$('#steps').innerHTML=`<span class="st ${av?'g':'b'}">${av?ic('check',12):''}Aadhaar</span><u></u><span class="st ${av?'b':''}">Phone OTP</span><u></u><span class="st">Done</span>`;
+const sb=$('#sendb');sb.textContent=S.otp?'OTP sent':'Send OTP';sb.disabled=!!S.otp;
+const rb=$('#rsb');rb.textContent=S.otp?(S.cd>0?'Resend in 0:'+pad(S.cd):'Resend OTP'):'';rb.disabled=!S.otp||S.cd>0}
+function tick(){if(S.r!=='s4')return;const w=win(),rem=60-Math.floor(Date.now()/1000)%60;
+if(S.w!==w){S.w=w;$('#qrb').innerHTML=qr(w);$('#tkn').textContent=tk(w)}
+$('#cdt').textContent='New code in '+(rem==60?'1:00':'0:'+pad(rem));$('#cdb').style.width=rem/60*100+'%'}
+setInterval(()=>{if(S.cd>0){S.cd--;u2()}tick()},1000);
+function go(r){if(r==='s2'&&S.pin)r='s3';
+if(r==='s2'&&!S.pin&&S.r!=='s2'){S.otp=null;S.aad='';S.ph='';S.cd=0}
+if(['s3','s4','s5','s6'].includes(r)&&!S.pin){toast('Sign in to your vault first');r='s2'}
+if(['s8','s9','s10'].includes(r)&&!S.din){toast('Sign in as a doctor first');r='s7'}
+if(r==='s7'&&S.din)r='s8';
+if(r==='s9'&&!S.op){toast('Find a patient first');r='s8'}
+if(r==='s5')S.ox=0;S.r=r;R();scrollTo({top:0})}
+function openP(id,how){id=(id||'').trim().toUpperCase();if(how==='em'&&!id)id=P.id;
+if(id!==P.id)return err('#err8','No vault found for that ID. Check the number printed on the card.');
+const k=how==='em'?'Emergency summary':how==='qr'?'QR scan':'Records opened';
+D.log.unshift({h:S.doc.h,dr:S.doc.n,w:how==='em'?'Emergency summary viewed':how==='qr'?'Records opened by QR scan':'Records opened',at:tm()});
+D.look.unshift({id,k,at:tm()});save();S.op=true;S.ot=tm().replace('Today, ','');S.st='scan';S.el='en';go('s9')}
+const act={
+go:a=>go(a.dataset.r),lang:a=>{S.lang=a.dataset.v;R()},
+pn:a=>{const v=a.dataset.v;if(v==='s6l'){S.lt='log';go('s6')}else if(v==='s6m'){S.lt='me';go('s6')}else go(v)},
+grp:a=>{S.tab=a.dataset.v;go('s5')},tab:a=>{S.tab=a.dataset.v;S.ox=0;R()},ox:a=>{S.ox=+a.dataset.v;R()},
+full:a=>{const r=reps()[+a.dataset.v];modal(`<h2>${r.ti}</h2><div class="pv">${pv(220)}<span>Sample slice, axial (full size)</span></div><div class="row"><span class="vb">${ic('shield',12)}Signed by ${r.by}</span><button class="cta" style="width:auto" data-a="close">Close</button></div>`)},
+lt:a=>{S.lt=a.dataset.v;R()},
+editec:()=>modal(`<h2>Emergency contact</h2><p class="mut">Staff at verified hospitals can see this number if you cannot speak.</p><label for="ecn">Name and relation</label><input id="ecn" value="${D.ec.n}"><label for="ecp">Phone number</label><input id="ecp" inputmode="tel" value="${D.ec.p}"><p class="err" id="erre" role="alert"></p><div class="row"><button class="cta o" data-a="close">Cancel</button><button class="cta" data-a="saveec">Save contact</button></div>`),
+saveec:()=>{const n=$('#ecn').value.trim(),p=$('#ecp').value.trim();if(!n)return err('#erre','Enter a name.');if(p.replace(/\D/g,'').length<10)return err('#erre','Enter a phone number with at least 10 digits.');D.ec={n,p};save();close();R();toast('Emergency contact saved')},
+psign:()=>{S.pin=false;S.otp=null;go('s1')},
+print:()=>window.print(),wallet:()=>{S.wal=true;R();toast('Added to wallet (demo)')},
+sendotp:()=>{if((S.aad||'').length!=12)return err('#err','Enter a valid 12-digit Aadhaar number first.');if(!/^\d{10}$/.test(S.ph||''))return err('#err','Enter a valid 10-digit mobile number.');
+err('#err','');S.otp=String(100000+Math.floor(Math.random()*900000));S.cd=30;u2();document.querySelectorAll('.ob').forEach((x,i)=>x.value=S.otp[i]);toast('Demo OTP: '+S.otp+' (a real app would send an SMS)',9000)},
+verify:()=>{const v=[...document.querySelectorAll('.ob')].map(x=>x.value).join('');
+if((S.aad||'').length!=12)return err('#err','Enter a valid 12-digit Aadhaar number.');
+if(!/^\d{10}$/.test(S.ph||''))return err('#err','Enter a valid 10-digit mobile number.');
+if(!S.otp)return err('#err','Tap Send OTP to get your code.');
+if(v!==S.otp)return err('#err','That code does not match. Check the 6 digits.');
+if(!$('#cons').checked)return err('#err','Please agree to the consent statement to continue.');
+S.pin=true;toast('Vault opened');go('s3')},
+eye:()=>{const p=$('#pw');p.type=p.type==='password'?'text':'password'},
+reqv:()=>modal(`<h2>Request verification</h2><p class="mut">New hospitals apply before they get access.</p><label for="rn">Hospital name</label><input id="rn"><label for="rg">Registration number</label><input id="rg"><label for="re">Official email</label><input id="re" type="email"><p class="err" id="errr" role="alert"></p><div class="row"><button class="cta o" data-a="close">Cancel</button><button class="cta te" data-a="sendreq">Send request</button></div>`),
+sendreq:()=>{if(!$('#rn').value.trim()||!$('#rg').value.trim()||!/^\S+@\S+\.\S+$/.test($('#re').value))return err('#errr','Fill in all three fields with a valid email.');close();toast('Request sent. Your hospital ID arrives by email after review.',4000)},
+dsign:()=>{const h=$('#hid').value.trim().toUpperCase(),em=$('#em').value.trim(),pw=$('#pw').value;
+if(!H[h])return err('#err7','That hospital ID is not on the verified list. Use Request verification to apply.');
+if(!/^\S+@\S+\.\S+$/.test(em))return err('#err7','Enter the email your hospital gave you.');
+if(pw.length<6)return err('#err7','Password must be at least 6 characters.');
+S.din=true;S.doc={n:dn(em),h:H[h],id:h};go('s8')},
+dn:a=>{const v=a.dataset.v;if(v==='s8'||v==='s10')go(v);else if(v==='rl'){go('s8');setTimeout(()=>$('#recent').scrollIntoView({behavior:'smooth'}),30)}else modal(`<h2>Hospital settings</h2><div class="kv"><span>Hospital</span>${S.doc.h}</div><div class="kv"><span>Hospital ID</span>${S.doc.id}</div><div class="kv"><span>Signed in as</span>${S.doc.n}</div><div class="kv"><span>Lookups saved</span>${D.look.length}</div><div class="row"><button class="cta o" data-a="close">Close</button><button class="cta te" data-a="dout">Sign out</button></div>`)},
+dout:()=>{S.din=false;S.op=false;close();go('s1')},
+open:a=>openP($('#fid').value,a.dataset.v),
+pick:a=>{S.fid=a.dataset.v;R()},
+scanq:()=>modal(`<h2>Scan the patient's QR</h2><div class="scanb"><i></i>${ic('scan',44)}</div><p class="mut" style="margin-top:8px">Demo: this prototype has no camera. Type the live code shown under the patient's QR, or use the code from this device.</p><label for="qc">Live code</label><input id="qc" autocomplete="off" placeholder="PV…"><p class="err" id="errq" role="alert"></p><div class="row"><button class="cta o" data-a="selfq">Use code from this device</button><button class="cta te" data-a="chkq">Open records</button></div>`),
+selfq:()=>{$('#qc').value=tk(win())},
+chkq:()=>{const c=$('#qc').value.trim().toUpperCase(),w=win();if(c!==tk(w)&&c!==tk(w-1))return err('#errq','Code expired or not recognised. Ask the patient to show the new code.');close();openP(P.id,'qr')},
+el:a=>{S.el=a.dataset.v;R()},st:a=>{S.st=a.dataset.v;R()},call:()=>toast('Calling '+D.ec.n+'… (demo, no real call placed)'),
+rt:a=>{S.ar.i=+a.dataset.v;R()},
+sample:()=>{S.ar.f={n:'CT_brain_'+iso()+'.dcm',mb:'214'};S.ar.p=0;upl();R()},
+sign:()=>{const a=S.ar,t=AT[a.i];if(!(a.f&&a.p>=100)&&!a.note.trim())return err('#err10',"Upload a file or add a doctor's note before signing.");
+if(a.f&&a.p<100)return err('#err10','Wait for the upload to finish.');
+D.rec.unshift({t:t[1],ti:a.title.trim()||t[0],d:iso(),by:S.doc.n,h:S.doc.h,pv:a.f&&t[1]==='scan'?1:0,em:0});
+D.log.unshift({h:S.doc.h,dr:S.doc.n,w:'Added and signed a '+t[0],at:tm()});save();S.ar={i:0,title:'',note:'',f:null,p:0};R();
+modal(`<h2>Record signed and added</h2><p class="mut">It now shows in the patient's vault as verified, signed by ${S.doc.n}.</p><div class="row"><button class="cta o" data-a="go2" data-r="s8">Find a patient</button><button class="cta te" data-a="go2" data-r="s9">View summary</button></div>`)},
+go2:a=>{close();go(a.dataset.r)},close,shade:(a,e)=>{if(e.target===a)close()},
+reset:()=>{D=seed();save();Object.assign(S,{pin:false,din:false,op:false,otp:null,wal:false});close();go('s1');toast('Demo data reset')}};
+let ut;function upl(){clearInterval(ut);ut=setInterval(()=>{const a=S.ar;if(!a.f||a.p>=100)return clearInterval(ut);a.p=Math.min(100,a.p+10);const b=$('#upb');if(b){b.style.width=a.p+'%';$('#upt').textContent=a.p<100?'Uploading… '+a.p+'%':a.f.mb+' MB, uploaded'}},150)}
+document.addEventListener('click',e=>{const a=e.target.closest('[data-a]');if(a&&act[a.dataset.a])act[a.dataset.a](a,e)});
+document.addEventListener('input',e=>{const t=e.target;
+if(t.id==='aad'){S.aad=t.value.replace(/\D/g,'').slice(0,12);t.value=fa(S.aad);u2()}
+else if(t.id==='ph'){let d=t.value.replace(/\D/g,'');if(d.length>10&&d.startsWith('91'))d=d.slice(2);if(d.length>10&&d.startsWith('0'))d=d.slice(1);S.ph=d.slice(0,10);t.value=S.ph;u2()}
+else if(t.classList.contains('ob')){t.value=t.value.replace(/\D/g,'');if(t.value&&t.nextElementSibling)t.nextElementSibling.focus()}
+else if(t.id==='hid'){$('#hok').style.display=H[t.value.trim().toUpperCase()]?'':'none'}
+else if(t.id==='ti')S.ar.title=t.value;else if(t.id==='nt')S.ar.note=t.value;else if(t.id==='fid')S.fid=t.value});
+document.addEventListener('change',e=>{if(e.target.id==='fl'&&e.target.files[0]){const f=e.target.files[0];S.ar.f={n:f.name,mb:(f.size/1048576).toFixed(1)};S.ar.p=0;upl();R()}});
+document.addEventListener('focusin',e=>{if(e.target.id==='aad')e.target.value=fa(S.aad||'')});
+document.addEventListener('focusout',e=>{if(e.target.id==='aad'&&(S.aad||'').length==12)e.target.value='XXXX XXXX '+S.aad.slice(-4)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')close();
+if(e.key==='Backspace'&&e.target.classList.contains('ob')&&!e.target.value&&e.target.previousElementSibling)e.target.previousElementSibling.focus();
+if(e.key==='Enter'){if(e.target.closest('#dform'))act.dsign();else if(e.target.id==='fid')act.open({dataset:{v:'id'}});else if(e.target.closest('[data-a=ox]'))e.target.click()}});
+document.addEventListener('paste',e=>{if(e.target.classList.contains('ob')){const d=(e.clipboardData.getData('text')||'').replace(/\D/g,'').slice(0,6);if(d.length>1){e.preventDefault();document.querySelectorAll('.ob').forEach((x,i)=>x.value=d[i]||'')}}});
+R();
+</script></body></html>
