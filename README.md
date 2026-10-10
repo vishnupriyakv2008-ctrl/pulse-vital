@@ -1,2 +1,2 @@
 # pulse-vital
-hackathon project
+# live link : https://pulse-vital.vercel.app/
