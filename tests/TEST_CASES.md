@@ -52,3 +52,12 @@ For each execution, record:
 - `tests/sample-data.json` documents the shape of the seeded local-storage object.
 - The OTP, hospital login, QR token, file upload, print, and wallet interactions are demo-only.
 - Never use real personal or medical information in test execution.
+
+
+## Fixture and deployment integrity checks
+
+| ID | Area | Steps | Expected result |
+| --- | --- | --- | --- |
+| PV-016 | Seed fixture synchronization | Compare tests/sample-data.json with seed() in index.html. Check record type, title, date, provider, hospital, pv/em flags, log, look, ec, patient ID, and pulse-vital-v1 storage key. | Fixture matches the initial seed values. The app does not import this fixture automatically. |
+| PV-017 | Source integrity | Compare repository index.html with the supplied index (1)(2).html file. | HTML, CSS, and JavaScript are unchanged; only fixture and documentation are updated for this release. |
+| PV-018 | Vercel production smoke test | Open https://pulse-vital.vercel.app/ on desktop and mobile. Check console errors, portal selection, patient demo flow, and doctor demo flow. | Page returns successfully, renders the supplied UI, and primary navigation flows work. Record browser-specific issues separately. |
