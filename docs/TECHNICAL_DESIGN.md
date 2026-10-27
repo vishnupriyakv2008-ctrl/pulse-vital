@@ -2,14 +2,15 @@
 
 **Document status:** Design of the current static demo prototype  
 **Application:** Pulse & Vital  
-**Live responsive demo:** https://pulse-vital-d0f8fj.v2.appdeploy.ai/  
+**Vercel production site:** https://pulse-vital.vercel.app/
+**AppDeploy demo:** https://pulse-vital-d0f8fj.v2.appdeploy.ai/  
 **Source entry point:** `index.html`
 
 ## 1. Purpose and scope
 
 Pulse & Vital demonstrates how a patient may view a consolidated health-vault interface and how a hospital user may find a demo patient, view emergency information, inspect records, and add a record. It is a frontend prototype, not a connected healthcare platform.
 
-This document describes the code in the repository and its intended user-facing workflow. The current implementation has no application server or remote persistence. The responsive hosted presentation is a CSS/layout treatment of the same demo workflows.
+This document describes the code in the repository and its intended user-facing workflow. The current implementation has no application server or remote persistence. The supplied `index.html` is the source of truth and is kept unchanged in this release. It contains the existing CSS breakpoints and workflow logic; the synthetic fixture mirrors its initial `seed()` state and is not loaded at runtime.
 
 ### In scope
 
