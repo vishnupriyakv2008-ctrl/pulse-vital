@@ -1,0 +1,168 @@
+{
+  "rec": [
+    {
+      "t": "scan",
+      "ti": "CT scan, brain",
+      "d": "2026-10-10",
+      "by": "Dr. A. Menon",
+      "h": "Sunrise Hospital",
+      "pv": 1
+    },
+    {
+      "t": "scan",
+      "ti": "X-ray, chest",
+      "d": "2026-09-14",
+      "by": "Dr. R. Nair",
+      "h": "Sunrise Hospital"
+    },
+    {
+      "t": "scan",
+      "ti": "MRI, right knee",
+      "d": "2026-06-02",
+      "by": "Dr. S. Iyer",
+      "h": "City Care Hospital"
+    },
+    {
+      "t": "blood",
+      "ti": "Complete blood count",
+      "d": "2026-09-28",
+      "by": "Dr. R. Nair",
+      "h": "Sunrise Hospital"
+    },
+    {
+      "t": "blood",
+      "ti": "HbA1c",
+      "d": "2026-09-28",
+      "by": "Dr. R. Nair",
+      "h": "Sunrise Hospital"
+    },
+    {
+      "t": "blood",
+      "ti": "Lipid profile",
+      "d": "2026-03-12",
+      "by": "Dr. A. Menon",
+      "h": "Sunrise Hospital"
+    },
+    {
+      "t": "med",
+      "ti": "Metformin 500 mg, twice daily",
+      "d": "2026-03-12",
+      "by": "Dr. A. Menon",
+      "h": "Sunrise Hospital"
+    },
+    {
+      "t": "med",
+      "ti": "Amlodipine 5 mg, once daily",
+      "d": "2026-03-12",
+      "by": "Dr. A. Menon",
+      "h": "Sunrise Hospital"
+    },
+    {
+      "t": "med",
+      "ti": "Vitamin D3 60,000 IU, weekly",
+      "d": "2026-05-04",
+      "by": "Dr. S. Iyer",
+      "h": "City Care Hospital"
+    },
+    {
+      "t": "med",
+      "ti": "Pantoprazole 40 mg, before breakfast",
+      "d": "2026-05-04",
+      "by": "Dr. S. Iyer",
+      "h": "City Care Hospital"
+    },
+    {
+      "t": "allergy",
+      "ti": "Penicillin",
+      "d": "2024-02-10",
+      "by": "Dr. A. Menon",
+      "h": "Sunrise Hospital"
+    },
+    {
+      "t": "allergy",
+      "ti": "Adrenaline auto-injector",
+      "d": "2024-02-10",
+      "by": "Dr. A. Menon",
+      "h": "Sunrise Hospital",
+      "em": 1
+    },
+    {
+      "t": "surgery",
+      "ti": "Appendectomy, 2019",
+      "d": "2019-06-20",
+      "by": "Dr. A. Menon",
+      "h": "Sunrise Hospital"
+    },
+    {
+      "t": "eye",
+      "ti": "Eye check-up",
+      "d": "2026-08-05",
+      "by": "Dr. P. Das",
+      "h": "City Care Hospital"
+    },
+    {
+      "t": "eye",
+      "ti": "Retina scan",
+      "d": "2026-02-11",
+      "by": "Dr. P. Das",
+      "h": "City Care Hospital"
+    },
+    {
+      "t": "ayur",
+      "ti": "Ayurvedic consultation",
+      "d": "2026-07-19",
+      "by": "Vaidya K. Warrier",
+      "h": "Arya Vaidya Clinic"
+    },
+    {
+      "t": "ayur",
+      "ti": "Panchakarma plan",
+      "d": "2026-01-23",
+      "by": "Vaidya K. Warrier",
+      "h": "Arya Vaidya Clinic"
+    },
+    {
+      "t": "full",
+      "ti": "Full-body health check",
+      "d": "2026-04-02",
+      "by": "Dr. S. Iyer",
+      "h": "City Care Hospital"
+    }
+  ],
+  "log": [
+    {
+      "h": "Sunrise Hospital",
+      "dr": "Dr. R. Nair",
+      "w": "Emergency summary viewed",
+      "at": "Today, 10:42 am"
+    },
+    {
+      "h": "City Care Hospital",
+      "dr": "Dr. S. Iyer",
+      "w": "Imaging reports viewed",
+      "at": "14 Sep 2026, 4:10 pm"
+    },
+    {
+      "h": "Sunrise Hospital",
+      "dr": "Dr. A. Menon",
+      "w": "Added and signed a CT scan",
+      "at": "12 Mar 2026, 11:20 am"
+    }
+  ],
+  "look": [
+    {
+      "id": "HP-2026-000001",
+      "k": "Emergency summary",
+      "at": "Today, 10:42"
+    },
+    {
+      "id": "HP-2026-000047",
+      "k": "Follow-up visit",
+      "at": "Yesterday"
+    }
+  ],
+  "ec": {
+    "n": "Emergency Contact (Mother)",
+    "p": "+91 90000 00000"
+  }
+}
