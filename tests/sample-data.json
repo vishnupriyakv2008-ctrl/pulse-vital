@@ -1,4 +1,12 @@
 {
+  "source": "index.html",
+  "sourceOfTruth": "Mirrors the initial seed() state in index.html. This fixture is for testing/documentation and is not imported by the browser app. Runtime changes in localStorage are not reflected here.",
+  "patient": {
+    "id": "HP-2026-000001",
+    "name": "Vishnu Priya Vinodh K",
+    "shortName": "Vishnu Priya",
+    "bg": "O+"
+  },
   "rec": [
     {
       "t": "scan",
@@ -164,5 +172,10 @@
   "ec": {
     "n": "Amma (Mother)",
     "p": "+91 98765 43321"
+  },
+  "constants": {
+    "defaultDoctor": "Dr. A. Menon",
+    "defaultHospital": "Sunrise Hospital",
+    "localStorageKey": "pulse-vital-v1"
   }
 }
