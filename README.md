@@ -6,9 +6,10 @@ Pulse & Vital is a **static, browser-only health-vault prototype**. It demonstra
 
 ## Live demo
 
-- Responsive AppDeploy demo: https://pulse-vital-d0f8fj.v2.appdeploy.ai/
+- Vercel production site: https://pulse-vital.vercel.app/
+- AppDeploy demo: https://pulse-vital-d0f8fj.v2.appdeploy.ai/
 
-The repository is intentionally small: the current prototype is implemented in a single `index.html` file with inline CSS and JavaScript.
+The repository is intentionally small: the current prototype is implemented in a single `index.html` file with inline CSS and JavaScript. For this release, `index.html` was restored to the exact supplied source and left unchanged; the fixture and documentation are aligned around it.
 
 ## Features in the prototype
 
@@ -81,7 +82,7 @@ The OTP is generated in the browser and shown to the user as a demo toast; it is
 - Records, lookup history, and the emergency contact are saved to that browser profile and origin only.
 - Data is not synchronized between devices or shared between different browsers.
 - Reset the demo using the in-app **Reset demo data** action, or clear the site data for the origin in browser settings.
-- `tests/sample-data.json` provides a synthetic sample fixture matching the local dataset shape. It is documentation/test input; it is not automatically imported by the application.
+- `tests/sample-data.json` mirrors the initial `seed()` state in `index.html`, including its 18 records, flags, access log, recent lookups, emergency contact, patient ID, and local-storage key. It is documentation/test input and is not automatically imported by the application. Re-sync it whenever the seed is intentionally changed.
 
 ## Documentation and test cases
 
